@@ -4,6 +4,15 @@ from heapq import heappush, heappop, heapify
 # sys.stdin = open("input", "r")
 # sys.stdout = open("output", "w")
 
+
+# add edge to mst
+def update_mst(frm, to, cost, mst):
+    if frm in mst:
+        mst[frm].update({to: cost})
+    else:
+        mst[frm] = {to: cost}
+        
+
 # this is for prim's to start off with
 def make_graph(edges):
     if not edges:
@@ -26,16 +35,8 @@ def make_graph(edges):
     return graph
 
 
-# add edge to mst
-def update_mst(frm, to, cost, mst):
-    if frm in mst:
-        mst[frm].update({to: cost})
-    else:
-        mst[frm] = {to: cost}
-
-
 # prims
-def mst_prims(graph, start="a"):
+def mst_prims(graph, start):
     mst = {}
     visited = set([start])
     edges = [(cost, start, to) for to, cost in graph[start].items()]
@@ -168,7 +169,7 @@ def main():
     ]
 
     # prims
-    print(mst_prims(make_graph(edges), 1))
+    print(mst_prims(make_graph(edges), start=1))
 
     # Kruskals
     print(mst_kruskals(edges))
