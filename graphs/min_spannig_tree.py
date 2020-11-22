@@ -4,6 +4,15 @@ from heapq import heappush, heappop, heapify
 # sys.stdin = open("input", "r")
 # sys.stdout = open("output", "w")
 
+
+# add edge to mst
+def update_mst(frm, to, cost, mst):
+    if frm in mst:
+        mst[frm].update({to: cost})
+    else:
+        mst[frm] = {to: cost}
+        
+
 # this is for prim's to start off with
 def make_graph(edges):
     if not edges:
@@ -24,14 +33,6 @@ def make_graph(edges):
         graph[end].update({start: weight})
 
     return graph
-
-
-# add edge to mst
-def update_mst(frm, to, cost, mst):
-    if frm in mst:
-        mst[frm].update({to: cost})
-    else:
-        mst[frm] = {to: cost}
 
 
 # prims
