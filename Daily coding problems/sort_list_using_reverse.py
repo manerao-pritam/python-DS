@@ -19,7 +19,6 @@ def reverse__(arr, i, j):
     while j >= i:
         arr[i], arr[j] = arr[j], arr[i]
         i, j = i + 1, j - 1
-    return arr
 
 
 def sort__(arr):
@@ -34,7 +33,7 @@ def sort__(arr):
                 while j < len__ and arr[i] > arr[j]:
                     j += 1
 
-                arr = reverse__(arr, i, j - 1)
+                reverse__(arr, i, j - 1)
                 i, j = 0, 1
     return arr
 
