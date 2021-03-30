@@ -1,1 +1,1 @@
-Arrays practice questions.
+Arrays practice questions
