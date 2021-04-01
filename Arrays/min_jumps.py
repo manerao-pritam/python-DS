@@ -40,7 +40,7 @@ class Solution:
 
             # end hasn't reached yet
             # calculate next Interval
-            # end of prev + 1 to nextpos
+            # end of prev interval + 1 to nextpos
             interval = self.Interval(interval.end + 1, nextpos)
 
             # start can't be greater than end
