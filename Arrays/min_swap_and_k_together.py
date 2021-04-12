@@ -83,8 +83,8 @@ class Solution:
 
 
 def main():
-    s1 = Solution()
     for _ in range(int(input())):
+        s1 = Solution()
         k = int(input())
         nums = [int(n) for n in re.sub(
             '[^a-zA-Z0-9-]', ' ', input()).strip().split()]
