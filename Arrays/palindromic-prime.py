@@ -36,8 +36,8 @@ class Solution:
 
 
 def main():
-    s1 = Solution()
     for _ in range(int(input())):
+        s1 = Solution()
         n = int(input())
         print(f'{n}th palindromic prime is: {s1.get_nth_palindromic_prime(n)}')
 
