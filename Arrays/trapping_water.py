@@ -116,8 +116,8 @@ class Solution:
 
 
 def main():
-    s1 = Solution()
     for _ in range(int(input())):
+        s1 = Solution()
         nums = [int(n) for n in re.sub(
             '[^a-zA-Z0-9-]', ' ', input()).strip().split()]
         print(s1.trapping_water(nums))
