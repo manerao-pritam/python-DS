@@ -11,7 +11,7 @@ class Trie:
         """
         self.root = {}
 
-    def __contains__(self, word: str) -> bool:
+    def __contains__(self, word: str, startswith=False) -> bool:
         """
         Returns if the word is in the trie.
         """
@@ -23,7 +23,11 @@ class Trie:
 
             curr = curr[ch]
 
-        return curr[Trie.is_word]
+        # this is for prefix search for startswith metod
+        if startswith and curr:
+            return True
+
+        return curr[Trie.is_word] if Trie.is_word in curr else False
 
     def __delitem__(self, word) -> bool:
         """
@@ -86,13 +90,7 @@ class Trie:
         """
         Returns if there is any word in the trie that starts with the given prefix.
         """
-        curr = self.root
-        for ch in prefix:
-            if not ch in curr:
-                return False
-            curr = curr[ch]
-
-        return True
+        return self.__contains__(prefix, startswith=True)
 
 
 def main():
