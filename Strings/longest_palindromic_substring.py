@@ -36,8 +36,7 @@ class Solution:
         # if longest is a single char then the ans needs to be the first char, so iterate backward
         for i in range(len(s)-1, -1, -1):
             for j in range(i, len(s)):
-                longest = s[i: j +
-                            1] if is_longer_palindrome(s[i:j+1]) else longest
+                longest = s[i: j + 1] if is_longer_palindrome(s[i:j+1]) else longest
 
         return longest
 
