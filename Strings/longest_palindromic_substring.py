@@ -62,8 +62,8 @@ class Solution:
         start = end = 0
         # if longest is a single char then the ans needs to be the first char, so iterate backward
         for i in range(len(s)-1, -1, -1):
-            l1 = get_palindrome_len(i, i)   # odd len string
-            l2 = get_palindrome_len(i, i+1)  # even len string
+            l1 = get_palindrome_len(i, i)       # odd len string
+            l2 = get_palindrome_len(i, i+1)     # even len string
 
             longest = max(l1, l2)
 
