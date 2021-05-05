@@ -1,4 +1,4 @@
-from collections import namedtuple
+from collections import namedtuple, deque
 import unittest
 
 
@@ -122,6 +122,52 @@ class BinaryTree:
 
         return result
 
+    def levelorder(self, root):
+        result, nodes_to_visit = [], deque([root])
+
+        while nodes_to_visit:
+            root = nodes_to_visit.popleft()
+
+            if root:
+                result += [root.val]
+                nodes_to_visit += [root.left, root.right]
+
+        return result
+
+    def reverse_levelorder(self, root):
+        nodes_to_visit, result = deque([root]), deque()
+
+        while nodes_to_visit:
+            root = nodes_to_visit.popleft()
+
+            if root:
+                result.appendleft(root.val)
+                nodes_to_visit += [root.right, root.left]
+
+        return list(result)
+
+    def zig_zag_traversal(self, root):
+        nodes_to_visit, result = deque([root]), []
+        level = 0
+
+        # BFS
+        while nodes_to_visit:
+            size = len(nodes_to_visit)
+            level += 1
+            children = []
+
+            for _ in range(size):
+                root = nodes_to_visit.popleft()
+
+                if root:
+                    children += [root.val]
+                    nodes_to_visit += [root.left, root.right]
+
+            # reverse children list for even no. level
+            result += children[::-1] if not level % 2 else children
+
+        return result
+
 
 class TestBinaryTree(unittest.TestCase):
     def test_create_tree(self):
@@ -172,6 +218,49 @@ class TestBinaryTree(unittest.TestCase):
         root = tree.create_tree([])
         self.assertTrue(not tree.postorder_iter(root))
 
+    def test_levelorder(self):
+        tree = BinaryTree()
+        root = tree.create_tree([2, 1, 1, 10, 5, None, 4])
+        self.assertEqual(tree.levelorder(root), [2, 1, 1, 10, 5, 4])
+
+        # single node
+        root = tree.create_tree([1])
+        self.assertEqual(tree.levelorder(root), [1])
+
+        # empty tree
+        root = tree.create_tree([])
+        self.assertTrue(not tree.levelorder(root))
+
+    def test_reverse_levelorder(self):
+        tree = BinaryTree()
+        root = tree.create_tree([2, 1, 1, 10, 5, None, 4])
+        self.assertEqual(tree.reverse_levelorder(root), [10, 5, 4, 1, 1, 2])
+
+        # single node
+        root = tree.create_tree([1])
+        self.assertEqual(tree.reverse_levelorder(root), [1])
+
+        # empty tree
+        root = tree.create_tree([])
+        self.assertTrue(not tree.reverse_levelorder(root))
+
+    def test_zig_zag_traversal(self):
+        tree = BinaryTree()
+        root = tree.create_tree([2, 1, 1, 10, 5, None, 4])
+        self.assertEqual(tree.zig_zag_traversal(root), [2, 1, 1, 10, 5, 4])
+
+        root = tree.create_tree([7, 9, 7, 8, 8, 6, None, 10, 9])
+        self.assertEqual(tree.zig_zag_traversal(
+            root), [7, 7, 9, 8, 8, 6, 9, 10])
+
+        # single node
+        root = tree.create_tree([1])
+        self.assertEqual(tree.zig_zag_traversal(root), [1])
+
+        # empty tree
+        root = tree.create_tree([])
+        self.assertTrue(not tree.zig_zag_traversal(root))
+
 
 # def main():
 #     tree = BinaryTree()
@@ -186,6 +275,10 @@ class TestBinaryTree(unittest.TestCase):
 #     print('inorder: ', tree.inorder(root))
 #     print('preorder: ', tree.preorder_iter(root))
 #     print('postorder: ', tree.postorder_iter(root))
+#     root = tree.create_tree([7, 9, 7, 8, 8, 6, None, 10, 9])
+#     print(tree.zig_zag_traversal(root))
+#     root = tree.create_tree([2, 1, 1, 10, 5, None, 4])
+#     print(tree.zig_zag_traversal(root))
 
 
 if __name__ == '__main__':
