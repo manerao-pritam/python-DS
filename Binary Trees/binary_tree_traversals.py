@@ -1,3 +1,4 @@
+from collections import namedtuple
 import unittest
 
 
@@ -82,11 +83,44 @@ class BinaryTree:
 
         return result
 
+    # iterative preorder is simply a level order traversal
+    # right child will be pushed first and then the left child
     def preorder_iter(self, root) -> list:
-        pass
+        stk, result = [root], []
 
+        while stk:
+            curr = stk.pop()
+
+            if curr:
+                result += [curr.val]
+                stk += [curr.right, curr.left]
+
+        return result
+
+    # iterative postorder is simply an extended level order traversal with node visited status
+    # right child will be pushed first and then the left child
     def postorder_iter(self, root) -> list:
-        pass
+        if not root:
+            return []
+
+        RootStatus = namedtuple('RootStatus', ('node', 'visited'))
+        stk, result = [RootStatus(root, False)], []
+
+        while stk:
+            root, visited = stk.pop()
+
+            if visited:
+                result += [root.val]
+            else:
+                stk += [RootStatus(root, True)]
+
+                if root.right:
+                    stk += [RootStatus(root.right, False)]
+
+                if root.left:
+                    stk += [RootStatus(root.left, False)]
+
+        return result
 
 
 class TestBinaryTree(unittest.TestCase):
@@ -120,6 +154,24 @@ class TestBinaryTree(unittest.TestCase):
         root = tree.create_tree([])
         self.assertTrue(not tree.inorder_iter(root))
 
+    def test_preorder_iter(self):
+        tree = BinaryTree()
+        root = tree.create_tree([2, 1, 1, 10, 5, None, 4])
+        self.assertEqual(tree.preorder_iter(root), [2, 1, 10, 5, 1, 4])
+
+        # empty tree
+        root = tree.create_tree([])
+        self.assertTrue(not tree.preorder_iter(root))
+
+    def test_postorder_iter(self):
+        tree = BinaryTree()
+        root = tree.create_tree([2, 1, 1, 10, 5, None, 4])
+        self.assertEqual(tree.postorder_iter(root), [10, 5, 1, 4, 1, 2])
+
+        # empty tree
+        root = tree.create_tree([])
+        self.assertTrue(not tree.postorder_iter(root))
+
 
 # def main():
 #     tree = BinaryTree()
@@ -132,8 +184,8 @@ class TestBinaryTree(unittest.TestCase):
 #     print('postorder: ', tree.postorder(root))
 #     root = tree.create_tree([2, 1, 1, 10, 5, None, 4])
 #     print('inorder: ', tree.inorder(root))
-#     print('preorder: ', tree.preorder(root))
-#     print('postorder: ', tree.postorder(root))
+#     print('preorder: ', tree.preorder_iter(root))
+#     print('postorder: ', tree.postorder_iter(root))
 
 
 if __name__ == '__main__':
