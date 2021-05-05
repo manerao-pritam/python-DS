@@ -216,19 +216,19 @@ class BinaryTree:
         # return result
 
     def vertical_traversal(self, root) -> list:
-        res, positions = [], defaultdict(list)
+        result, positions = [], defaultdict(list)
 
         def assignPositions(root, x, y):
             if not root:
                 return
             assignPositions(root.left, x-1, y+1)
-            positions[x].append((y, root.val))
+            positions[x] += [(y, root.val)]
             assignPositions(root.right, x+1, y+1)
 
         assignPositions(root, 0, 0)
         for x in sorted(positions.keys()):
-            res += [i[1] for i in sorted(positions[x])]
-        return res
+            result += [i[1] for i in sorted(positions[x])]
+        return result
 
         '''
         alternative approach -- need to fix the order of levels
