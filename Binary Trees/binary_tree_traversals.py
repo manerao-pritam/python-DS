@@ -231,39 +231,39 @@ class BinaryTree:
         return res
 
         '''
-        alternative approach
+        alternative approach -- need to fix the order of levels
         '''
         # For each level, add -1 to left node and +1 to right node
 
-        def update_level_map(key, root):
-            if key not in level_map:
-                level_map[key] = [root.val]
-            else:
-                level_map[key] += [root.val]
+        # def update_level_map(key, root):
+        #     if key not in level_map:
+        #         level_map[key] = [root.val]
+        #     else:
+        #         level_map[key] += [root.val]
 
-        if not root:
-            return []
+        # if not root:
+        #     return []
 
-        NodeStatus = namedtuple('NodeStatus', ('key', 'node'))
-        nodes_to_visit = deque([NodeStatus(0, root)])
-        level_map = {0: [root.val]}
+        # NodeStatus = namedtuple('NodeStatus', ('key', 'node'))
+        # nodes_to_visit = deque([NodeStatus(0, root)])
+        # level_map = {0: [root.val]}
 
-        # For each level, add -1 to left node and +1 to right node
-        while nodes_to_visit:
-            level_size = len(nodes_to_visit)
+        # # For each level, add -1 to left node and +1 to right node
+        # while nodes_to_visit:
+        #     level_size = len(nodes_to_visit)
 
-            for _ in range(level_size):
-                key, root = nodes_to_visit.popleft()
+        #     for _ in range(level_size):
+        #         key, root = nodes_to_visit.popleft()
 
-                if root.left:
-                    nodes_to_visit += [NodeStatus(key - 1, root.left)]
-                    update_level_map(key - 1, root.left)
+        #         if root.left:
+        #             nodes_to_visit += [NodeStatus(key - 1, root.left)]
+        #             update_level_map(key - 1, root.left)
 
-                if root.right:
-                    nodes_to_visit += [NodeStatus(key + 1, root.right)]
-                    update_level_map(key + 1, root.right)
+        #         if root.right:
+        #             nodes_to_visit += [NodeStatus(key + 1, root.right)]
+        #             update_level_map(key + 1, root.right)
 
-        return [level_map[key] for key in sorted(level_map.keys())]
+        # return [level_map[key] for key in sorted(level_map.keys())]
 
 
 class TestBinaryTree(unittest.TestCase):
