@@ -16,18 +16,36 @@ class BinaryTree:
     # create tree from values
     # values follow this sequence: root, left, right, root.left.left, root.left.right, root.right.left, root.right.right and so on
     def create_tree(self, values) -> Node():
-        nodes = [None if v is None else Node(v) for v in values]
+        if not values:
+            return self.root
 
-        for idx in range(1, len(nodes)):
-            node = nodes[idx]
-            if not node is None:
-                parent_idx = (idx - 1) // 2
-                parent = nodes[parent_idx]
-                if parent is None:
-                    raise f'Parent missing at {parent}'
-                setattr(parent, 'left' if idx % 2 else 'right', node)
+        self.root = Node(values[0])
+        nodes_to_visit = deque([self.root])
+        idx = 1
 
-        self.root = nodes[0] if nodes else None
+        while idx < len(values):
+            node = nodes_to_visit.popleft()
+
+            # create a left node and add it to root's left
+            val = values[idx]
+            idx += 1
+
+            if not val is None:
+                node.left = Node(val)
+                nodes_to_visit += [node.left]
+
+            # input list is exhausted
+            if idx == len(values):
+                break
+
+            # create a right node and add it to root's right
+            val = values[idx]
+            idx += 1
+
+            if not val is None:
+                node.right = Node(val)
+                nodes_to_visit += [node.right]
+
         return self.root
 
     # core traversals: Recursive
@@ -284,9 +302,9 @@ class TestBinaryTree(unittest.TestCase):
 
         # empty tree
         root = tree.create_tree([])
-        self.assertTrue(not tree.inorder(root))
-        self.assertTrue(not tree.preorder(root))
-        self.assertTrue(not tree.postorder(root))
+        self.assertTrue(tree.inorder(root))
+        self.assertTrue(tree.preorder(root))
+        self.assertTrue(tree.postorder(root))
 
     def test_inorder_iter(self):
         tree = BinaryTree()
@@ -295,7 +313,7 @@ class TestBinaryTree(unittest.TestCase):
 
         # empty tree
         root = tree.create_tree([])
-        self.assertTrue(not tree.inorder_iter(root))
+        self.assertTrue(tree.inorder_iter(root))
 
     def test_preorder_iter(self):
         tree = BinaryTree()
@@ -304,7 +322,7 @@ class TestBinaryTree(unittest.TestCase):
 
         # empty tree
         root = tree.create_tree([])
-        self.assertTrue(not tree.preorder_iter(root))
+        self.assertTrue(tree.preorder_iter(root))
 
     def test_postorder_iter(self):
         tree = BinaryTree()
@@ -313,7 +331,7 @@ class TestBinaryTree(unittest.TestCase):
 
         # empty tree
         root = tree.create_tree([])
-        self.assertTrue(not tree.postorder_iter(root))
+        self.assertTrue(tree.postorder_iter(root))
 
     def test_levelorder(self):
         tree = BinaryTree()
@@ -326,7 +344,7 @@ class TestBinaryTree(unittest.TestCase):
 
         # empty tree
         root = tree.create_tree([])
-        self.assertTrue(not tree.levelorder(root))
+        self.assertTrue(tree.levelorder(root))
 
     def test_reverse_levelorder(self):
         tree = BinaryTree()
@@ -339,7 +357,7 @@ class TestBinaryTree(unittest.TestCase):
 
         # empty tree
         root = tree.create_tree([])
-        self.assertTrue(not tree.reverse_levelorder(root))
+        self.assertTrue(tree.reverse_levelorder(root))
 
     def test_zig_zag_traversal(self):
         tree = BinaryTree()
@@ -356,7 +374,7 @@ class TestBinaryTree(unittest.TestCase):
 
         # empty tree
         root = tree.create_tree([])
-        self.assertTrue(not tree.zig_zag_traversal(root))
+        self.assertTrue(tree.zig_zag_traversal(root))
 
     def test_diagonal_traversal(self):
         tree = BinaryTree()
@@ -370,7 +388,7 @@ class TestBinaryTree(unittest.TestCase):
         root = tree.create_tree(
             [8, 3, 10, 1, None, 6, 14, None, None, None, None, 4, 7, 13])
         self.assertEqual(tree.diagonal_traversal(
-            root), [8, 10, 14, 3, 6, 7, 13, 1, 4])
+            root), [8, 10, 14, 7, 3, 6, 4, 1, 13])
 
         # single node
         root = tree.create_tree([1])
@@ -378,22 +396,7 @@ class TestBinaryTree(unittest.TestCase):
 
         # empty tree
         root = tree.create_tree([])
-        self.assertTrue(not tree.diagonal_traversal(root))
-        tree = BinaryTree()
-        root = tree.create_tree([2, 1, 1, 10, 5, None, 4])
-        self.assertEqual(tree.zig_zag_traversal(root), [2, 1, 1, 10, 5, 4])
-
-        root = tree.create_tree([7, 9, 7, 8, 8, 6, None, 10, 9])
-        self.assertEqual(tree.zig_zag_traversal(
-            root), [7, 7, 9, 8, 8, 6, 9, 10])
-
-        # single node
-        root = tree.create_tree([1])
-        self.assertEqual(tree.zig_zag_traversal(root), [1])
-
-        # empty tree
-        root = tree.create_tree([])
-        self.assertTrue(not tree.zig_zag_traversal(root))
+        self.assertTrue(tree.diagonal_traversal(root))
 
     def test_vertical_traversal(self):
         tree = BinaryTree()
@@ -407,7 +410,7 @@ class TestBinaryTree(unittest.TestCase):
         root = tree.create_tree(
             [8, 3, 10, 1, None, 6, 14, None, None, None, None, 4, 7, 13])
         self.assertEqual(tree.vertical_traversal(
-            root), [1, 3, 4, 8, 6, 10, 7, 13, 14])
+            root), [1, 3, 8, 6, 13, 10, 4, 14, 7])
 
         # single node
         root = tree.create_tree([1])
@@ -415,7 +418,7 @@ class TestBinaryTree(unittest.TestCase):
 
         # empty tree
         root = tree.create_tree([])
-        self.assertTrue(not tree.vertical_traversal(root))
+        self.assertTrue(tree.vertical_traversal(root))
 
 
 # def main():
