@@ -21,6 +21,8 @@ cols = [-1, 0, 1, -1, 1, -1, 0, 1]
 ''' 
 Iterative
 '''
+
+
 def belt_size(grid, r, c):
     current_size = 0
     nodes_to_visit = [(r, c)]
@@ -34,19 +36,19 @@ def belt_size(grid, r, c):
             current_size += 1
 
             for k in range(8):
-                r_tmp, c_tmp = r + rows[k], c + cols[k]
+                r_curr, c_curr = r + rows[k], c + cols[k]
                 if (
-                    0 <= r_tmp < len(grid)
-                    and 0 <= c_tmp < len(grid[0])
-                    and grid[r_tmp][c_tmp]
+                    0 <= r_curr < len(grid)
+                    and 0 <= c_curr < len(grid[0])
+                    and grid[r_curr][c_curr]
                 ):
-                    nodes_to_visit.append((r_tmp, c_tmp))
+                    nodes_to_visit.append((r_curr, c_curr))
 
     return current_size
 
 
 def largest_belt(arr, R, C):
-    grid = [arr[i : i + C] for i in range(0, len(arr), C)]
+    grid = [arr[i: i + C] for i in range(0, len(arr), C)]
     # print(grid)
 
     result = 0
@@ -63,23 +65,25 @@ def largest_belt(arr, R, C):
 ''' 
 Recursive
 '''
+
+
 def belt_size(grid, i, j, count):
 
     grid[i][j] = 0
 
     for k in range(8):
-        i_tmp, j_tmp = i + rows[k], j + cols[k]
+        r_curr, c_curr = i + rows[k], j + cols[k]
         if (
-            (0 <= i_tmp < len(grid))
-            and (0 <= j_tmp < len(grid[0]))
-            and grid[i_tmp][j_tmp]
+            (0 <= r_curr < len(grid))
+            and (0 <= c_curr < len(grid[0]))
+            and grid[r_curr][c_curr]
         ):
             count[0] += 1
-            belt_size(grid, i_tmp, j_tmp, count)
+            belt_size(grid, r_curr, c_curr, count)
 
 
 def largest_belt(arr, R, C):
-    grid = [arr[i : i + C] for i in range(0, len(arr), C)]
+    grid = [arr[i: i + C] for i in range(0, len(arr), R)]
     # print("input:", grid, R, C)
     result = 0
     for i in range(len(grid)):
@@ -91,7 +95,7 @@ def largest_belt(arr, R, C):
                 result = max(result, count[0])
 
     return result
-    
+
 
 def main():
     R, C = tuple(int(x) for x in input().strip().split())
